@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3FAFF28F20AEE0D70015C46D /* GenreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FAFF28E20AEE0D70015C46D /* GenreTableViewCell.swift */; };
 		3FBA897820AED98800AC0BBF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA897720AED98800AC0BBF /* AppDelegate.swift */; };
 		3FBA897A20AED98800AC0BBF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FBA897920AED98800AC0BBF /* ViewController.swift */; };
 		3FBA897D20AED98800AC0BBF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FBA897B20AED98800AC0BBF /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3FAFF28E20AEE0D70015C46D /* GenreTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreTableViewCell.swift; sourceTree = "<group>"; };
 		3FBA897420AED98800AC0BBF /* MusicPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MusicPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FBA897720AED98800AC0BBF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3FBA897920AED98800AC0BBF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				3FBA897720AED98800AC0BBF /* AppDelegate.swift */,
 				3FBA897920AED98800AC0BBF /* ViewController.swift */,
+				3FAFF28E20AEE0D70015C46D /* GenreTableViewCell.swift */,
 				3FBA897B20AED98800AC0BBF /* Main.storyboard */,
 				3FBA897E20AED98800AC0BBF /* Assets.xcassets */,
 				3FBA898020AED98800AC0BBF /* LaunchScreen.storyboard */,
@@ -138,6 +141,7 @@
 			files = (
 				3FBA897A20AED98800AC0BBF /* ViewController.swift in Sources */,
 				3FBA897820AED98800AC0BBF /* AppDelegate.swift in Sources */,
+				3FAFF28F20AEE0D70015C46D /* GenreTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +279,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6CL2ZA8ZDN;
 				INFOPLIST_FILE = MusicPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = radovan.corovic.MusicPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -289,7 +295,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6CL2ZA8ZDN;
 				INFOPLIST_FILE = MusicPlayer/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = radovan.corovic.MusicPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
