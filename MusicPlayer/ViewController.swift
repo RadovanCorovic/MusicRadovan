@@ -17,6 +17,8 @@ struct WebsiteDescription: Decodable {
 
 struct SongDescription: Decodable {
     let dataset: [SongInfo]
+    let total_pages: Int
+    let page: String
 }
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -109,6 +111,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
                 let destinationVC = segue.destination as! SongsListViewController
                 destinationVC.genreeID = genreID
+                self.tableview.deselectRow(at: selectedRowForIndexPath, animated: false)
             }
         }
     }

@@ -13,6 +13,10 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var songsArray = [SongInfo]()
     var genreeID = String()
     var songDataset = [SongInfo]()
+    var limit = 10
+    var page = 1
+    var totalPages = 0
+    
     @IBOutlet weak var tableview: UITableView!
     
     
@@ -44,6 +48,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             }
             
             self.songDataset.append(contentsOf: songDescription.dataset)
+            self.totalPages = songDescription.total_pages
+
             
             DispatchQueue.main.async {
                 self.tableview.reloadData()
@@ -69,6 +75,20 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        
+        if(indexPath.row == songDataset.count - 1){
+            // Last row
+            if(totalPages > page){
+                // It there is no more pages
+                page += 1
+                
+                print("Fetching page: \(page) of total pages: \(totalPages)")
+                fetchSongs()
+            }
+        }
     }
     
 }
