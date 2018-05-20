@@ -74,7 +74,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! GenreTableViewCell
         
         let data = dataset[indexPath.row]
-        let songData = songDataset[indexPath.row]
+//        let songData = songDataset[indexPath.row]
         
         cell.genreName.text = data.genre_title
         cell.genreColor.backgroundColor = UIColor(hexString: data.genre_color)
@@ -107,6 +107,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.songDataset.append(contentsOf: songDescription.dataset)
             
             }.resume()
+        
+            self.performSegue(withIdentifier: "showSongs", sender: self)
+        
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -124,7 +127,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
+        if segue.identifier == "showSongs" {
+            print("Uspeo")
+        }
     }
     
 }
