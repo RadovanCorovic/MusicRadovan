@@ -103,12 +103,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Error: Couldn't decode data into dataset")
                 return
             }
-            print(SongDescription.self)
             self.songDataset.append(contentsOf: songDescription.dataset)
             
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "showSongs", sender: self)
+             }
             }.resume()
-        
-            self.performSegue(withIdentifier: "showSongs", sender: self)
         
     }
     
@@ -127,8 +127,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+       
         if segue.identifier == "showSongs" {
-            print("Uspeo")
+            if let selectedRowForIndexPath = self.tableview.indexPathForSelectedRow {
+
+                let destinationVC = segue.destination as! SongsListViewController
+
+                destinationVC.songsArray = songDataset
+
+                print(songDataset)
+                
+            }
+            
         }
     }
     

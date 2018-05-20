@@ -9,15 +9,17 @@
 import UIKit
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
     
-    let array = [String]()
+    var songsArray = [SongInfo]()
+    
     @IBOutlet weak var tableview: UITableView!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+       
+        tableview.reloadData()
         tableview.delegate = self
         tableview.dataSource = self
 
@@ -25,13 +27,21 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return array.count
+        return songsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
-        
+        let cell = tableview.dequeueReusableCell(withIdentifier: "cell") as! SongsTableViewCell
+        let songs = songsArray[indexPath.row]
+
+        cell.songTile.text = songs.track_title
+        cell.songArtist.text = songs.artist_name
+
         return cell
     }
-
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
 }
