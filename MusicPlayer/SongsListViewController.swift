@@ -11,7 +11,8 @@ import UIKit
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var songsArray = [SongInfo]()
-    
+    var genreeID = String()
+    var songDataset = [SongInfo]()
     @IBOutlet weak var tableview: UITableView!
     
     
@@ -23,19 +24,45 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         tableview.delegate = self
         tableview.dataSource = self
 
-        // Do any additional setup after loading the view.
+        fetchSongs()
     }
+    
+    func fetchSongs() {
+        var url = URLComponents(string: "https://freemusicarchive.org/api/get/tracks.json?")!
+        url.queryItems = [
+            URLQueryItem(name: "api_key", value: "CFEFES9JPKBN4T7H"),
+            URLQueryItem(name: "page", value: "\(genreeID)")
+        ]
+        
+        URLSession.shared.dataTask(with: url.url!) { (data, response, error) in
+            
+            guard let data = data else {return}
+            
+            guard let songDescription = try? JSONDecoder().decode(SongDescription.self, from: data) else {
+                print("Error: Couldn't decode data into dataset")
+                return
+            }
+            
+            self.songDataset.append(contentsOf: songDescription.dataset)
+            
+            DispatchQueue.main.async {
+                self.tableview.reloadData()
+            }
+            
+            }.resume()
+    }
+    
+
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return songsArray.count
+        return songDataset.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: "cell") as! SongsTableViewCell
-        let songs = songsArray[indexPath.row]
-
-        cell.songTile.text = songs.track_title
-        cell.songArtist.text = songs.artist_name
+        let song = songDataset[indexPath.row]
+        cell.songTile.text = song.track_title
+        cell.songArtist.text = song.artist_name
 
         return cell
     }

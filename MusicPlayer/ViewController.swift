@@ -22,11 +22,11 @@ struct SongDescription: Decodable {
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableview: UITableView!
+    var genreID = String()
     var limit = 30
     var page = 1
     var totalPages = 0
     var dataset = [GenreInfo]()
-    var songDataset = [SongInfo]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +74,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! GenreTableViewCell
         
         let data = dataset[indexPath.row]
-//        let songData = songDataset[indexPath.row]
         
         cell.genreName.text = data.genre_title
         cell.genreColor.backgroundColor = UIColor(hexString: data.genre_color)
@@ -86,30 +85,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
         let data = dataset[indexPath.row]
-        let genreID = data.genre_id
-        
-        var url = URLComponents(string: "https://freemusicarchive.org/api/get/tracks.json?")!
-        url.queryItems = [
-            URLQueryItem(name: "api_key", value: "CFEFES9JPKBN4T7H"),
-            URLQueryItem(name: "genre_id", value: "\(genreID)")
-            
-        ]
-        
-        URLSession.shared.dataTask(with: url.url!) { (data, response, error) in
-            
-            guard let data = data else {return}
-            
-            guard let songDescription = try? JSONDecoder().decode(SongDescription.self, from: data) else {
-                print("Error: Couldn't decode data into dataset")
-                return
-            }
-            self.songDataset.append(contentsOf: songDescription.dataset)
-            
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "showSongs", sender: self)
-             }
-            }.resume()
-        
+        genreID = data.genre_id
+        self.performSegue(withIdentifier: "showSongs", sender: self)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -123,7 +100,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 print("Fetching page: \(page) of total pages: \(totalPages)")
                 fetchData()
             }
-            
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -132,16 +108,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if let selectedRowForIndexPath = self.tableview.indexPathForSelectedRow {
 
                 let destinationVC = segue.destination as! SongsListViewController
-
-                destinationVC.songsArray = songDataset
-
-                print(songDataset)
-                
+                destinationVC.genreeID = genreID
             }
-            
         }
     }
-    
 }
 
 extension UIColor {
