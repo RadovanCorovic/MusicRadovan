@@ -71,7 +71,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let data = dataset[indexPath.row]
         
         cell.genreName.text = data.genre_title
-        cell.backgroundColor = UIColor(hexString: data.genre_color)
+        cell.genreColor.backgroundColor = UIColor(hexString: data.genre_color)
+        
         
         return cell
     }
@@ -90,12 +91,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
         }
     }
-    
-    @objc func loadTable() {
-        self.tableview.reloadData()
-    }
-    
-
 }
 
 extension UIColor {

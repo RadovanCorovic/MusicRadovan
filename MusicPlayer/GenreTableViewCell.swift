@@ -11,7 +11,8 @@ import UIKit
 class GenreTableViewCell: UITableViewCell {
 
     @IBOutlet var genreName: UILabel!
-    
+ 
+    @IBOutlet weak var genreColor: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
