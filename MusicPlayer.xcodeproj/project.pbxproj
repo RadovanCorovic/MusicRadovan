@@ -14,6 +14,7 @@
 		3FBA897F20AED98800AC0BBF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FBA897E20AED98800AC0BBF /* Assets.xcassets */; };
 		3FBA898220AED98800AC0BBF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3FBA898020AED98800AC0BBF /* LaunchScreen.storyboard */; };
 		3FE8AB5B20AF3EE90048A02E /* GenreInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FE8AB5A20AF3EE80048A02E /* GenreInfo.swift */; };
+		3FEB134620B1921E0069BF71 /* SongInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FEB134520B1921E0069BF71 /* SongInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		3FBA898120AED98800AC0BBF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3FBA898320AED98800AC0BBF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FE8AB5A20AF3EE80048A02E /* GenreInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreInfo.swift; sourceTree = "<group>"; };
+		3FEB134520B1921E0069BF71 /* SongInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				3FBA897720AED98800AC0BBF /* AppDelegate.swift */,
 				3FBA897920AED98800AC0BBF /* ViewController.swift */,
 				3FAFF28E20AEE0D70015C46D /* GenreTableViewCell.swift */,
+				3FEB134520B1921E0069BF71 /* SongInfo.swift */,
 				3FE8AB5A20AF3EE80048A02E /* GenreInfo.swift */,
 				3FBA897B20AED98800AC0BBF /* Main.storyboard */,
 				3FBA897E20AED98800AC0BBF /* Assets.xcassets */,
@@ -145,6 +148,7 @@
 				3FBA897A20AED98800AC0BBF /* ViewController.swift in Sources */,
 				3FBA897820AED98800AC0BBF /* AppDelegate.swift in Sources */,
 				3FAFF28F20AEE0D70015C46D /* GenreTableViewCell.swift in Sources */,
+				3FEB134620B1921E0069BF71 /* SongInfo.swift in Sources */,
 				3FE8AB5B20AF3EE90048A02E /* GenreInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
