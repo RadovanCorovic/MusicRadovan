@@ -15,7 +15,7 @@ struct AlbumDescription: Decodable {
 }
 
 class ArtistAlbumsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-   
+    var urlAdress = String()
     var artistID = String()
     var albumDataset = [AlbumInfo]()
     var limit = 20
@@ -67,8 +67,16 @@ class ArtistAlbumsViewController: UIViewController, UITableViewDelegate, UITable
         let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "cell")
         
         let data = albumDataset[indexPath.row]
+        urlAdress = data.album_url
         cell.textLabel?.text = data.album_title
+        
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = albumDataset[indexPath.row]
+        urlAdress = data.album_url
+        performSegue(withIdentifier: "showWeb", sender: self)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -80,6 +88,15 @@ class ArtistAlbumsViewController: UIViewController, UITableViewDelegate, UITable
                 print("Fetching page \(page) of total pages \(totalPages)")
                 fetchAlbums()
             }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showWeb" {
+            let destinationVC = segue.destination as! WebViewController
+            
+            destinationVC.webAdress = urlAdress
+            print(urlAdress)
         }
     }
 

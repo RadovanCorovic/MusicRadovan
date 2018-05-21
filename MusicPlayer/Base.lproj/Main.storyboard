@@ -216,6 +216,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="K1n-2E-sra" kind="show" identifier="showWeb" id="ecG-By-pG9"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -234,6 +237,40 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C82-08-fuh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2724" y="117"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="j76-Xq-zkt">
+            <objects>
+                <viewController id="K1n-2E-sra" customClass="WebViewController" customModule="MusicPlayer" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9R0-iM-SdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Qd-on-1zt">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="8Qd-on-1zt" firstAttribute="trailing" secondItem="2fd-z9-VlB" secondAttribute="trailing" id="BYL-QR-bLV"/>
+                            <constraint firstItem="8Qd-on-1zt" firstAttribute="leading" secondItem="2fd-z9-VlB" secondAttribute="leading" id="IWU-iU-2b0"/>
+                            <constraint firstItem="8Qd-on-1zt" firstAttribute="top" secondItem="2fd-z9-VlB" secondAttribute="top" id="M8R-3E-V3q"/>
+                            <constraint firstItem="8Qd-on-1zt" firstAttribute="bottom" secondItem="2fd-z9-VlB" secondAttribute="bottom" id="j4n-Y4-LVW"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="2fd-z9-VlB"/>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="8Qd-on-1zt" id="pfQ-nb-QLl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wg0-4f-351" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3496.8000000000002" y="111.99400299850076"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="OZL-K3-qIx">
