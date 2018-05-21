@@ -10,7 +10,6 @@ import UIKit
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var songsArray = [SongInfo]()
     var artistID = String()
     var genreeID = String()
     var songDataset = [SongInfo]()
@@ -33,15 +32,18 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func fetchSongs() {
-        var url = URLComponents(string: "https://freemusicarchive.org/api/get/tracks.json?")!
+        var url = URLComponents(string: "https://freemusicarchive.org/api/get/tracks.json")!
         url.queryItems = [
             URLQueryItem(name: "api_key", value: "CFEFES9JPKBN4T7H"),
-            URLQueryItem(name: "page", value: "\(genreeID)")
+            URLQueryItem(name: "page", value: "\(page)"),
+            URLQueryItem(name: "genre_id", value: genreeID)
+
         ]
         
         URLSession.shared.dataTask(with: url.url!) { (data, response, error) in
             
             guard let data = data else {return}
+//            let dataString = String(data: data, encoding: .utf8)
             
             guard let songDescription = try? JSONDecoder().decode(SongDescription.self, from: data) else {
                 print("Error: Couldn't decode data into dataset")
@@ -110,11 +112,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 destinationVC?.songName = songDetils.track_title
                 destinationVC?.artistName = songDetils.artist_name
                 destinationVC?.artistId = songDetils.artist_id
-                
-                print(destinationVC?.artistId)
-                print(songDetils.artist_id)
             }
         }
     }
-    
 }

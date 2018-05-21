@@ -31,7 +31,16 @@ class SongDetailsViewController: UIViewController {
     }
 
     @IBAction func showAllArtistButtonTapepd(_ sender: Any) {
+        performSegue(withIdentifier: "showAlbums", sender: self)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showAlbums" {
+            let destinationVC = segue.destination as! ArtistAlbumsViewController
+            
+            destinationVC.artistID = artistId
+            
+        }
+    }
 
 }
