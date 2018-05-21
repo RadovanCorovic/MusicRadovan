@@ -11,6 +11,7 @@ import UIKit
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var songsArray = [SongInfo]()
+    var artistID = String()
     var genreeID = String()
     var songDataset = [SongInfo]()
     var limit = 10
@@ -57,8 +58,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             
             }.resume()
     }
-    
-
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return songDataset.count
@@ -67,10 +66,17 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: "cell") as! SongsTableViewCell
         let song = songDataset[indexPath.row]
+        
         cell.songTile.text = song.track_title
         cell.songArtist.text = song.artist_name
 
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let data = songDataset[indexPath.row]
+        artistID = data.artist_id
+        print(artistID)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -102,7 +108,11 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 let destinationVC = segue.destination as? SongDetailsViewController
                 
                 destinationVC?.songName = songDetils.track_title
-                destinationVC?.artistName = songDetils.artist_name      
+                destinationVC?.artistName = songDetils.artist_name
+                destinationVC?.artistId = songDetils.artist_id
+                
+                print(destinationVC?.artistId)
+                print(songDetils.artist_id)
             }
         }
     }

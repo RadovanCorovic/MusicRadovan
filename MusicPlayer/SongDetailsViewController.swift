@@ -10,6 +10,7 @@ import UIKit
 
 class SongDetailsViewController: UIViewController {
 
+    var artistId = String()
     var songName: String?
     var artistName: String?
     
