@@ -58,9 +58,7 @@ class ArtistAlbumsViewController: UIViewController, UITableViewDelegate, UITable
             
             }.resume()
     }
-    
-    
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return albumDataset.count
     }
@@ -71,6 +69,18 @@ class ArtistAlbumsViewController: UIViewController, UITableViewDelegate, UITable
         let data = albumDataset[indexPath.row]
         cell.textLabel?.text = data.album_title
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if(indexPath.row == albumDataset.count - 1) {
+            // Last row
+            if(totalPages > page) {
+                page += 1
+                
+                print("Fetching page \(page) of total pages \(totalPages)")
+                fetchAlbums()
+            }
+        }
     }
 
 

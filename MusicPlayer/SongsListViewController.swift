@@ -78,7 +78,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = songDataset[indexPath.row]
         artistID = data.artist_id
-        print(artistID)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
