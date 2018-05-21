@@ -10,6 +10,7 @@ import UIKit
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    
     var artistID = String()
     var genreeID = String()
     var songDataset = [SongInfo]()
@@ -27,7 +28,37 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         tableview.reloadData()
         tableview.delegate = self
         tableview.dataSource = self
+        
+        //player
 
+        
+        let window = UIApplication.shared.keyWindow!
+        let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 0.80, width: window.frame.width - 20, height: window.frame.height * 0.15))
+        playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        playerView.layer.cornerRadius = 5
+        window.addSubview(playerView)
+        
+        let playButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
+        playButton.layer.cornerRadius = 10
+        playButton.setImage(#imageLiteral(resourceName: "playButton"), for: UIControlState.normal)
+        playerView.addSubview(playButton)
+        
+        let stopButton = UIButton(frame: CGRect(x: window.frame.width * 0.6, y: window.frame.height * 0.07, width: 40, height: 40))
+        stopButton.layer.cornerRadius = 10
+        stopButton.setImage(#imageLiteral(resourceName: "stopButton"), for: UIControlState.normal)
+        playerView.addSubview(stopButton)
+        
+        let pauseButton = UIButton(frame: CGRect(x: window.frame.width * 0.2, y: window.frame.height * 0.07, width: 40, height: 40))
+        pauseButton.layer.cornerRadius = 10
+        pauseButton.setImage(#imageLiteral(resourceName: "pauseButton"), for: UIControlState.normal)
+        playerView.addSubview(pauseButton)
+        
+        let trackName = UILabel(frame: CGRect(x: window.frame.width * 0.07, y: 1, width: 300, height: 20))
+        trackName.textAlignment = NSTextAlignment.center
+        trackName.text = "Where You Belong I belong 2 with you"
+//        trackName.font = UIFont(name: "System", size: 10.0)
+        
+        playerView.addSubview(trackName)
         fetchSongs()
     }
     

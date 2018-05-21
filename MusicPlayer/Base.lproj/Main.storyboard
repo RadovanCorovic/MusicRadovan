@@ -109,6 +109,29 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wU0-Bn-uDX" userLabel="stopButton">
+                                                    <rect key="frame" x="292" y="14" width="21" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" backgroundImage="stopButton"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pWw-8j-5I5" userLabel="pauseButton">
+                                                    <rect key="frame" x="318" y="14" width="21" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" backgroundImage="pauseButton"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ea4-ou-q5W" userLabel="downloadButton">
+                                                    <rect key="frame" x="344" y="14" width="21" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" backgroundImage="downloadButton"/>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TjB-Wf-7W2" userLabel="playButton">
+                                                    <rect key="frame" x="266" y="14" width="21" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <state key="normal" backgroundImage="playButton"/>
+                                                    <connections>
+                                                        <action selector="playButtonTapped:" destination="ki5-W1-X2B" eventType="touchUpInside" id="g7l-3P-PCr"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
@@ -291,4 +314,10 @@
             <point key="canvasLocation" x="-266" y="117"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="downloadButton" width="250" height="250"/>
+        <image name="pauseButton" width="225" height="225"/>
+        <image name="playButton" width="626" height="626"/>
+        <image name="stopButton" width="256" height="256"/>
+    </resources>
 </document>

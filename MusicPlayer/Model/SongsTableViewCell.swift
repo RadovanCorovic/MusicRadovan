@@ -18,6 +18,12 @@ class SongsTableViewCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    @IBAction func playButtonTapped(_ sender: Any) {
+        
+        print("Player se pojavljuje")
+    }
+    
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
