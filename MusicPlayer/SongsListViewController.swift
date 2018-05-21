@@ -91,4 +91,20 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showSongDetails" {
+            if let selectedRowForIndexPath = tableview.indexPathForSelectedRow {
+                
+                let songDetils: SongInfo
+                
+                songDetils = songDataset[selectedRowForIndexPath.row]
+                
+                let destinationVC = segue.destination as? SongDetailsViewController
+                
+                destinationVC?.songName = songDetils.track_title
+                destinationVC?.artistName = songDetils.artist_name      
+            }
+        }
+    }
+    
 }
