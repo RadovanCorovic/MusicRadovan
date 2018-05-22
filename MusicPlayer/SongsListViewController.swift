@@ -11,7 +11,8 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let window = UIApplication.shared.keyWindow!
+    
+    var selectedSongTitle = String()
     var playerViewOutlet = UIView()
     var playButtonOutlet = UIButton()
     var pauseButtonOutlet = UIButton()
@@ -49,7 +50,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         // Player view customization
-//        let window = UIApplication.shared.keyWindow!
+        let window = UIApplication.shared.keyWindow!
         let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 1.1, width: window.frame.width - 20, height: window.frame.height * 0.15))
         playerViewOutlet = playerView
         playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -100,19 +101,33 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     // Player butons functions
     
-    @IBAction func cellPlayButtonTapped(_ sender: Any) {
+    @IBAction func cellPlayButtonTapped(_ button: UIButton) {
         audioPlayer.play()
         playButtonOutlet.isHidden = true
         pauseButtonOutlet.isHidden = false
-        
+
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
                 self.playerViewOutlet.alpha = 1
                 self.playerViewOutlet.frame.origin.y -= 200
             }
-        } 
+        }
         print("Song started playing")
+        
+        // Getting song name based on indexPath.row user selected
+        if let indexPath = self.tableview.indexPathForView(button) {
+            let user : SongInfo
+            user = songDataset[indexPath.row]
+            let songName = user.track_title
+            print(songName)
+        
+            print("Button tapped at index path \(indexPath)")
+        } else {
+            print("Button indexPath not found")
+        }
+        
     }
+
     
     @IBAction func cellPauseButtonTapped(_ sender: Any) {
         audioPlayer.pause()
@@ -211,6 +226,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         let cell = tableview.dequeueReusableCell(withIdentifier: "cell") as! SongsTableViewCell
         let song = songDataset[indexPath.row]
         
+        selectedSongTitle = song.track_title
+        print(selectedSongTitle)
         
         cell.songTile.text = song.track_title
         cell.songArtist.text = song.artist_name
@@ -256,5 +273,15 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 destinationVC?.artistId = songDetils.artist_id
             }
         }
+    }
+}
+public extension UITableView {
+    
+    
+    func indexPathForView(_ view: UIView) -> IndexPath? {
+        let center = view.center
+        let viewCenter = self.convert(center, from: view.superview)
+        let indexPath = self.indexPathForRow(at: viewCenter)
+        return indexPath
     }
 }
