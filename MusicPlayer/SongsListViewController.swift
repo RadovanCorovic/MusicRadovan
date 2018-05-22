@@ -11,6 +11,9 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var playButtonOutlet = UIButton()
+    var pauseButtonOutlet = UIButton()
+    
     var sliderOutlet = UISlider()
     var audioPlayer = AVAudioPlayer()
     var artistID = String()
@@ -21,7 +24,11 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var totalPages = 0
     
     @IBOutlet weak var tableview: UITableView!
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        pauseButtonOutlet.isHidden = true
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,6 +55,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Play, Pause, Stop buttons
         let playButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
+        playButtonOutlet = playButton
         playButton.layer.cornerRadius = 10
         playButton.setImage(#imageLiteral(resourceName: "playButton"), for: UIControlState.normal)
         playButton.addTarget(self, action: #selector(PlayButtonTapped), for: UIControlEvents.touchUpInside)
@@ -60,7 +68,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         playerView.addSubview(stopButton)
         
-        let pauseButton = UIButton(frame: CGRect(x: window.frame.width * 0.2, y: window.frame.height * 0.07, width: 40, height: 40))
+        let pauseButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
+        pauseButtonOutlet = pauseButton
         pauseButton.layer.cornerRadius = 10
         pauseButton.setImage(#imageLiteral(resourceName: "pauseButton"), for: UIControlState.normal)
         pauseButton.addTarget(self, action: #selector(PauseButtonTapped), for: UIControlEvents.touchUpInside)
@@ -88,7 +97,10 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Player butons functions
     @objc func PlayButtonTapped(sender: UIButton!) {
         audioPlayer.play()
+        playButtonOutlet.isHidden = true
+        pauseButtonOutlet.isHidden = false
         print("Song started playing")
+        
     }
     @objc func StopButtonTapped(sender: UIButton!) {
         audioPlayer.stop()
@@ -97,6 +109,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     @objc func PauseButtonTapped(sender: UIButton!) {
         audioPlayer.pause()
+        playButtonOutlet.isHidden = false
+        pauseButtonOutlet.isHidden = true
         print("Song is paused")
     }
     @objc func ChangeAudioTime(sender: UISlider!) {
@@ -147,6 +161,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableview.dequeueReusableCell(withIdentifier: "cell") as! SongsTableViewCell
         let song = songDataset[indexPath.row]
+        
         
         cell.songTile.text = song.track_title
         cell.songArtist.text = song.artist_name
