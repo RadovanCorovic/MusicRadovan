@@ -11,6 +11,8 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let window = UIApplication.shared.keyWindow!
+    var playerViewOutlet = UIView()
     var playButtonOutlet = UIButton()
     var pauseButtonOutlet = UIButton()
     
@@ -47,8 +49,9 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         // Player view customization
-        let window = UIApplication.shared.keyWindow!
-        let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 0.80, width: window.frame.width - 20, height: window.frame.height * 0.15))
+//        let window = UIApplication.shared.keyWindow!
+        let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 1.1, width: window.frame.width - 20, height: window.frame.height * 0.15))
+        playerViewOutlet = playerView
         playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         playerView.layer.cornerRadius = 5
         window.addSubview(playerView)
@@ -95,6 +98,20 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     // Player butons functions
+    
+    @IBAction func cellPlayButtonTapped(_ sender: Any) {
+        audioPlayer.play()
+        playButtonOutlet.isHidden = true
+        pauseButtonOutlet.isHidden = false
+        
+        UIView.animate(withDuration: 1) {
+            self.playerViewOutlet.frame.origin.y -= 200
+        }
+        
+        print("Song started playing")
+        
+    }
+    
     @objc func PlayButtonTapped(sender: UIButton!) {
         audioPlayer.play()
         playButtonOutlet.isHidden = true
@@ -105,6 +122,11 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     @objc func StopButtonTapped(sender: UIButton!) {
         audioPlayer.stop()
         audioPlayer.currentTime = 0
+        
+        UIView.animate(withDuration: 1) {
+            self.playerViewOutlet.frame.origin.y += 200
+        }
+        
         print("Song stopped playing")
     }
     @objc func PauseButtonTapped(sender: UIButton!) {

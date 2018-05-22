@@ -129,7 +129,7 @@
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <state key="normal" backgroundImage="playButton"/>
                                                     <connections>
-                                                        <action selector="playButtonTapped:" destination="ki5-W1-X2B" eventType="touchUpInside" id="g7l-3P-PCr"/>
+                                                        <action selector="cellPlayButtonTapped:" destination="hMA-Dg-s01" eventType="touchUpInside" id="yun-L8-FLT"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -316,8 +316,8 @@
     </scenes>
     <resources>
         <image name="downloadButton" width="250" height="250"/>
-        <image name="pauseButton" width="225" height="225"/>
-        <image name="playButton" width="626" height="626"/>
+        <image name="pauseButton" width="255" height="255"/>
+        <image name="playButton" width="590" height="591"/>
         <image name="stopButton" width="256" height="256"/>
     </resources>
 </document>
