@@ -54,6 +54,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         playerViewOutlet = playerView
         playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         playerView.layer.cornerRadius = 5
+        playerViewOutlet.alpha = 0
         window.addSubview(playerView)
         
         // Play, Pause, Stop buttons
@@ -104,14 +105,38 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         playButtonOutlet.isHidden = true
         pauseButtonOutlet.isHidden = false
         
-        UIView.animate(withDuration: 1) {
-            self.playerViewOutlet.frame.origin.y -= 200
-        }
-        
+        if playerViewOutlet.alpha == 0 {
+            UIView.animate(withDuration: 1) {
+                self.playerViewOutlet.alpha = 1
+                self.playerViewOutlet.frame.origin.y -= 200
+            }
+        } 
         print("Song started playing")
-        
     }
     
+    @IBAction func cellPauseButtonTapped(_ sender: Any) {
+        audioPlayer.pause()
+        playButtonOutlet.isHidden = false
+        pauseButtonOutlet.isHidden = true
+    }
+    
+    @IBAction func cellStopButtonTapped(_ sender: Any) {
+        audioPlayer.stop()
+        audioPlayer.currentTime = 0
+        
+        if playerViewOutlet.alpha == 1 {
+            UIView.animate(withDuration: 1) {
+                self.playerViewOutlet.alpha = 0
+                self.playerViewOutlet.frame.origin.y += 200
+            }
+        }
+        print("Song stopped playing")
+    }
+    
+    @IBAction func downloadButtonTapped(_ sender: Any) {
+        //code for song download
+    }
+
     @objc func PlayButtonTapped(sender: UIButton!) {
         audioPlayer.play()
         playButtonOutlet.isHidden = true
@@ -123,10 +148,12 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         audioPlayer.stop()
         audioPlayer.currentTime = 0
         
-        UIView.animate(withDuration: 1) {
-            self.playerViewOutlet.frame.origin.y += 200
+        if playerViewOutlet.alpha == 1 {
+            UIView.animate(withDuration: 1) {
+                self.playerViewOutlet.alpha = 0
+                self.playerViewOutlet.frame.origin.y += 200
+            }
         }
-        
         print("Song stopped playing")
     }
     @objc func PauseButtonTapped(sender: UIButton!) {
