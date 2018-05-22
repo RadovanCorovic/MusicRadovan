@@ -11,6 +11,7 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var sliderOutlet = UISlider()
     var audioPlayer = AVAudioPlayer()
     var artistID = String()
     var genreeID = String()
@@ -45,6 +46,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         playerView.layer.cornerRadius = 5
         window.addSubview(playerView)
         
+        // Play, Pause, Stop buttons
         let playButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
         playButton.layer.cornerRadius = 10
         playButton.setImage(#imageLiteral(resourceName: "playButton"), for: UIControlState.normal)
@@ -64,14 +66,22 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         pauseButton.addTarget(self, action: #selector(PauseButtonTapped), for: UIControlEvents.touchUpInside)
         playerView.addSubview(pauseButton)
         
+        // Track label
         let trackName = UILabel(frame: CGRect(x: window.frame.width * 0.07, y: 1, width: 300, height: 20))
         trackName.textAlignment = NSTextAlignment.center
         trackName.text = "Where You Belong I belong 2 with you"
 //        trackName.font = UIFont(name: "System", size: 10.0)
         playerView.addSubview(trackName)
         
+        // Slider
         let seekSlider = UISlider(frame: CGRect(x: window.frame.width * 0.07, y: window.frame.height * 0.03, width: 300, height: 40))
+        seekSlider.addTarget(self, action: #selector(ChangeAudioTime), for: UIControlEvents.touchUpInside)
+        sliderOutlet = seekSlider
+        sliderOutlet.minimumValue = 0
+        sliderOutlet.maximumValue = Float(audioPlayer.duration)
+        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         playerView.addSubview(seekSlider)
+        
         fetchSongs()
     }
     
@@ -82,11 +92,22 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     @objc func StopButtonTapped(sender: UIButton!) {
         audioPlayer.stop()
+        audioPlayer.currentTime = 0
         print("Song stopped playing")
     }
     @objc func PauseButtonTapped(sender: UIButton!) {
         audioPlayer.pause()
         print("Song is paused")
+    }
+    @objc func ChangeAudioTime(sender: UISlider!) {
+        audioPlayer.stop()
+        audioPlayer.currentTime = TimeInterval(sliderOutlet.value)
+        audioPlayer.prepareToPlay()
+        audioPlayer.play()
+    }
+    // Function that updates slider time value
+    @objc func updateSlider() {
+        sliderOutlet.value = Float(audioPlayer.currentTime)
     }
     
     func fetchSongs() {
