@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    
+    var audioPlayer = AVAudioPlayer()
     var artistID = String()
     var genreeID = String()
     var songDataset = [SongInfo]()
@@ -30,8 +31,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         tableview.dataSource = self
         
         //player
-
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath: Bundle.main.path(forResource: "sample", ofType: "mp3")!))
+            audioPlayer.prepareToPlay()
+        }catch{
+            print(error)
+        }
         
+        // Player view customization
         let window = UIApplication.shared.keyWindow!
         let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 0.80, width: window.frame.width - 20, height: window.frame.height * 0.15))
         playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -41,25 +48,45 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         let playButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
         playButton.layer.cornerRadius = 10
         playButton.setImage(#imageLiteral(resourceName: "playButton"), for: UIControlState.normal)
+        playButton.addTarget(self, action: #selector(PlayButtonTapped), for: UIControlEvents.touchUpInside)
         playerView.addSubview(playButton)
         
         let stopButton = UIButton(frame: CGRect(x: window.frame.width * 0.6, y: window.frame.height * 0.07, width: 40, height: 40))
         stopButton.layer.cornerRadius = 10
+        stopButton.addTarget(self, action: #selector(StopButtonTapped), for: UIControlEvents.touchUpInside)
         stopButton.setImage(#imageLiteral(resourceName: "stopButton"), for: UIControlState.normal)
+        
         playerView.addSubview(stopButton)
         
         let pauseButton = UIButton(frame: CGRect(x: window.frame.width * 0.2, y: window.frame.height * 0.07, width: 40, height: 40))
         pauseButton.layer.cornerRadius = 10
         pauseButton.setImage(#imageLiteral(resourceName: "pauseButton"), for: UIControlState.normal)
+        pauseButton.addTarget(self, action: #selector(PauseButtonTapped), for: UIControlEvents.touchUpInside)
         playerView.addSubview(pauseButton)
         
         let trackName = UILabel(frame: CGRect(x: window.frame.width * 0.07, y: 1, width: 300, height: 20))
         trackName.textAlignment = NSTextAlignment.center
         trackName.text = "Where You Belong I belong 2 with you"
 //        trackName.font = UIFont(name: "System", size: 10.0)
-        
         playerView.addSubview(trackName)
+        
+        let seekSlider = UISlider(frame: CGRect(x: window.frame.width * 0.07, y: window.frame.height * 0.03, width: 300, height: 40))
+        playerView.addSubview(seekSlider)
         fetchSongs()
+    }
+    
+    // Player butons functions
+    @objc func PlayButtonTapped(sender: UIButton!) {
+        audioPlayer.play()
+        print("Song started playing")
+    }
+    @objc func StopButtonTapped(sender: UIButton!) {
+        audioPlayer.stop()
+        print("Song stopped playing")
+    }
+    @objc func PauseButtonTapped(sender: UIButton!) {
+        audioPlayer.pause()
+        print("Song is paused")
     }
     
     func fetchSongs() {
