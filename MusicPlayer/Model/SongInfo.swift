@@ -13,4 +13,5 @@ struct SongInfo: Decodable {
     let artist_name: String
     let artist_id: String
     let track_duration: String
+    let track_url: String
 }

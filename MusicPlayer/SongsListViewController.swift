@@ -11,6 +11,9 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+//    var player:AVPlayer?
+    var trackURL = String()
+    var currentTimeLabel = UILabel()
     var trackDurationOutlet = UILabel()
     var trackNameOutlet = UILabel()
     var selectedTrackDuration = String()
@@ -48,6 +51,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath: Bundle.main.path(forResource: "sample", ofType: "mp3")!))
             audioPlayer.prepareToPlay()
+    
         }catch{
             print(error)
         }
@@ -59,6 +63,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         playerView.layer.cornerRadius = 5
         playerViewOutlet.alpha = 0
+        
         window.addSubview(playerView)
         
         // Play, Pause, Stop buttons
@@ -93,6 +98,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         let seekSlider = UISlider(frame: CGRect(x: window.frame.width * 0.07, y: window.frame.height * 0.03, width: 300, height: 40))
         seekSlider.addTarget(self, action: #selector(ChangeAudioTime), for: UIControlEvents.touchUpInside)
         sliderOutlet = seekSlider
+        sliderOutlet.minimumTrackTintColor = UIColor.red
+        sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
         sliderOutlet.minimumValue = 0
         sliderOutlet.maximumValue = Float(audioPlayer.duration)
         var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
@@ -100,12 +107,19 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         // Track duration label
         let trackDuration = UILabel(frame: CGRect(x: window.frame.width * 0.8, y: 42, width: 50, height: 20))
-//        trackDurationOutlet = trackName
-        trackDurationOutlet.backgroundColor = UIColor.red
         trackDurationOutlet = trackDuration
         playerView.addSubview(trackDuration)
+        
+        // Current time label
+        let currentTime = UILabel(frame: CGRect(x: window.frame.width * 0.03, y: 42, width: 50, height: 20))
+        currentTimeLabel = currentTime
+        currentTimeLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        currentTimeLabel.text = "00:00"
+        playerView.addSubview(currentTime)
+        
         fetchSongs()
     }
+    
     
     // Player butons functions
     
@@ -120,11 +134,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             data = songDataset[indexPath.row]
             selectedSongTitle = data.track_title
             selectedTrackDuration = data.track_duration
+            trackURL = data.track_url
+            print(trackURL)
             
             print("Button tapped at index path \(indexPath)")
         } else {
             print("Button indexPath not found")
         }
+        
 
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
@@ -248,9 +265,11 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = songDataset[indexPath.row]
+        
         artistID = data.artist_id
         trackDuration = data.track_title
-        print(trackDuration)
+        
+
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
