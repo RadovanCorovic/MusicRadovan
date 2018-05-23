@@ -11,7 +11,9 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var trackDurationOutlet = UILabel()
     var trackNameOutlet = UILabel()
+    var selectedTrackDuration = String()
     var selectedSongTitle = String()
     var playerViewOutlet = UIView()
     var playButtonOutlet = UIButton()
@@ -21,6 +23,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var audioPlayer = AVAudioPlayer()
     var artistID = String()
     var genreeID = String()
+    var trackDuration = String()
     var songDataset = [SongInfo]()
     var limit = 10
     var page = 1
@@ -95,6 +98,12 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         playerView.addSubview(seekSlider)
         
+        // Track duration label
+        let trackDuration = UILabel(frame: CGRect(x: window.frame.width * 0.8, y: 42, width: 50, height: 20))
+//        trackDurationOutlet = trackName
+        trackDurationOutlet.backgroundColor = UIColor.red
+        trackDurationOutlet = trackDuration
+        playerView.addSubview(trackDuration)
         fetchSongs()
     }
     
@@ -110,6 +119,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             let data : SongInfo
             data = songDataset[indexPath.row]
             selectedSongTitle = data.track_title
+            selectedTrackDuration = data.track_duration
             
             print("Button tapped at index path \(indexPath)")
         } else {
@@ -121,7 +131,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 self.playerViewOutlet.alpha = 1
                 self.playerViewOutlet.frame.origin.y -= 200
             }
+        } else {
+            // if player is visable and user taps next song to play, player will stop previous nad strat new song
+            audioPlayer.stop()
+            audioPlayer.currentTime = 0
+            audioPlayer.play()
         }
+        
+        self.trackDurationOutlet.text = self.selectedTrackDuration
         self.trackNameOutlet.text = self.selectedSongTitle
         print("Song started playing")
     }
@@ -232,6 +249,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = songDataset[indexPath.row]
         artistID = data.artist_id
+        trackDuration = data.track_title
+        print(trackDuration)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -271,7 +290,10 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
 }
 public extension UITableView {
     
-    
+    /// Function converts cordinates from tap position in UIView to IndexPath that is used for getting correct data from API.
+    ///
+    /// - Parameter view: current view
+    /// - Returns: IndexPath for selected row
     func indexPathForView(_ view: UIView) -> IndexPath? {
         let center = view.center
         let viewCenter = self.convert(center, from: view.superview)
