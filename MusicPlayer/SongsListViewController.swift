@@ -11,6 +11,7 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    var player: AVPlayer?
     var trackURL = String()
     var currentTimeLabel = UILabel()
     var trackDurationOutlet = UILabel()
@@ -22,7 +23,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var pauseButtonOutlet = UIButton()
     
     var sliderOutlet = UISlider()
-    var audioPlayer = AVAudioPlayer()
     var artistID = String()
     var genreeID = String()
     var trackDuration = String()
@@ -47,15 +47,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         tableview.delegate = self
         tableview.dataSource = self
         
-        //player
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath: Bundle.main.path(forResource: "sample", ofType: "mp3")!))
-            audioPlayer.prepareToPlay()
-    
-        }catch{
-            print(error)
-        }
-        
         // Player view customization
         customPlayerView()
         
@@ -74,7 +65,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Player butons functions
     
     @IBAction func cellPlayButtonTapped(_ button: UIButton) {
-        audioPlayer.play()
+        
+        
         playButtonOutlet.isHidden = true
         pauseButtonOutlet.isHidden = false
         
@@ -91,6 +83,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         } else {
             print("Button indexPath not found")
         }
+        
+        let urlString = "\(trackURL)/download"
+        if let url = URL(string: urlString) {
+            
+            player = AVPlayer(url: url)
+            
+            player?.play()
+        }
 
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
@@ -99,9 +99,10 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         } else {
             // if player is visable and user taps next song to play, player will stop previous nad strat new song
-            audioPlayer.stop()
-            audioPlayer.currentTime = 0
-            audioPlayer.play()
+            player?.pause()
+            player?.rate = 0.0
+
+            player?.play()
         }
         self.trackDurationOutlet.text = self.selectedTrackDuration
         self.trackNameOutlet.text = self.selectedSongTitle
@@ -109,14 +110,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @IBAction func cellPauseButtonTapped(_ sender: Any) {
-        audioPlayer.pause()
+        player?.pause()
         playButtonOutlet.isHidden = false
         pauseButtonOutlet.isHidden = true
     }
     
     @IBAction func cellStopButtonTapped(_ sender: Any) {
-        audioPlayer.stop()
-        audioPlayer.currentTime = 0
+        player?.pause()
+        player?.rate = 0.0
         
         if playerViewOutlet.alpha == 1 {
             UIView.animate(withDuration: 1) {
@@ -132,15 +133,15 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     @objc func PlayButtonTapped(sender: UIButton!) {
-        audioPlayer.play()
+        player?.play()
         playButtonOutlet.isHidden = true
         pauseButtonOutlet.isHidden = false
         print("Song started playing")
         
     }
     @objc func StopButtonTapped(sender: UIButton!) {
-        audioPlayer.stop()
-        audioPlayer.currentTime = 0
+        player?.pause()
+        player?.rate = 0.0
         
         if playerViewOutlet.alpha == 1 {
             UIView.animate(withDuration: 1) {
@@ -151,20 +152,22 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         print("Song stopped playing")
     }
     @objc func PauseButtonTapped(sender: UIButton!) {
-        audioPlayer.pause()
+        player?.pause()
         playButtonOutlet.isHidden = false
         pauseButtonOutlet.isHidden = true
         print("Song is paused")
     }
     @objc func ChangeAudioTime(sender: UISlider!) {
-        audioPlayer.stop()
-        audioPlayer.currentTime = TimeInterval(sliderOutlet.value)
-        audioPlayer.prepareToPlay()
-        audioPlayer.play()
+        player?.pause()
+        player?.rate = 0.0
+        player?.rate = sliderOutlet.value
+        player?.play()
     }
     // Function that updates slider time value
     @objc func updateSlider() {
-        sliderOutlet.value = Float(audioPlayer.currentTime)
+//        sliderOutlet.value = Float(player!.currentTime)
+//        let floatTime = Float(CMTimeGetSeconds((player?.currentTime())!))
+//        sliderOutlet.value = floatTime
     }
     
     func fetchSongs() {
@@ -316,9 +319,9 @@ extension SongsListViewController {
         sliderOutlet = seekSlider
         sliderOutlet.minimumTrackTintColor = UIColor.red
         sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
-        sliderOutlet.minimumValue = 0
-        sliderOutlet.maximumValue = Float(audioPlayer.duration)
-        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+//        sliderOutlet.minimumValue = 0
+//        sliderOutlet.maximumValue = 1
+//        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         playerViewOutlet.addSubview(seekSlider)
     }
     
