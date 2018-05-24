@@ -21,6 +21,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var playerViewOutlet = UIView()
     var playButtonOutlet = UIButton()
     var pauseButtonOutlet = UIButton()
+    var stopButtonOutlet = UIButton()
     
     var sliderOutlet = UISlider()
     var artistID = String()
@@ -33,10 +34,11 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     let window = UIApplication.shared.keyWindow!
     
     @IBOutlet weak var tableview: UITableView!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        pauseButtonOutlet.isHidden = true
+        stopButtonOutlet.isEnabled = false
     }
     
     override func viewDidLoad() {
@@ -60,6 +62,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         trackDurationElements()
         // Slider
         sliderElement()
+        
     }
   
     // Player butons functions
@@ -115,7 +118,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         pauseButtonOutlet.isHidden = true
     }
     
-    @IBAction func cellStopButtonTapped(_ sender: Any) {
+    @IBAction func cellStopButtonTapped(_ sender: UIButton!) {
+        stopButtonOutlet = sender.self
         player?.pause()
         player?.rate = 0.0
         
@@ -140,6 +144,9 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         
     }
     @objc func StopButtonTapped(sender: UIButton!) {
+        
+        stopButtonOutlet = sender.self
+        
         player?.pause()
         player?.rate = 0.0
         
@@ -162,12 +169,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         player?.rate = 0.0
         player?.rate = sliderOutlet.value
         player?.play()
-    }
-    // Function that updates slider time value
-    @objc func updateSlider() {
-//        sliderOutlet.value = Float(player!.currentTime)
-//        let floatTime = Float(CMTimeGetSeconds((player?.currentTime())!))
-//        sliderOutlet.value = floatTime
     }
     
     func fetchSongs() {
@@ -252,6 +253,21 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             }
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if isMovingFromParentViewController
+        {
+            playerViewOutlet.isHidden = true
+            print("View controller was popped")
+        }
+        else
+        {
+            print("New view controller was pushed")
+        }
+    }
+
+ 
 }
 public extension UITableView {
     
@@ -291,6 +307,7 @@ extension SongsListViewController {
     
     func stopElement() {
         let stopButton = UIButton(frame: CGRect(x: window.frame.width * 0.6, y: window.frame.height * 0.07, width: 40, height: 40))
+        stopButtonOutlet = stopButton
         stopButton.layer.cornerRadius = 10
         stopButton.addTarget(self, action: #selector(StopButtonTapped), for: UIControlEvents.touchUpInside)
         stopButton.setImage(#imageLiteral(resourceName: "stopButton"), for: UIControlState.normal)
