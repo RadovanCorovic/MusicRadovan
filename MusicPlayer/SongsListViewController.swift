@@ -11,7 +11,6 @@ import AVFoundation
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-//    var player:AVPlayer?
     var trackURL = String()
     var currentTimeLabel = UILabel()
     var trackDurationOutlet = UILabel()
@@ -31,6 +30,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var limit = 10
     var page = 1
     var totalPages = 0
+    let window = UIApplication.shared.keyWindow!
     
     @IBOutlet weak var tableview: UITableView!
     override func viewWillAppear(_ animated: Bool) {
@@ -42,7 +42,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       
+        fetchSongs()
         tableview.reloadData()
         tableview.delegate = self
         tableview.dataSource = self
@@ -57,70 +57,20 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
         
         // Player view customization
-        let window = UIApplication.shared.keyWindow!
-        let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 1.1, width: window.frame.width - 20, height: window.frame.height * 0.15))
-        playerViewOutlet = playerView
-        playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        playerView.layer.cornerRadius = 5
-        playerViewOutlet.alpha = 0
-        
-        window.addSubview(playerView)
+        customPlayerView()
         
         // Play, Pause, Stop buttons
-        let playButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
-        playButtonOutlet = playButton
-        playButton.layer.cornerRadius = 10
-        playButton.setImage(#imageLiteral(resourceName: "playButton"), for: UIControlState.normal)
-        playButton.addTarget(self, action: #selector(PlayButtonTapped), for: UIControlEvents.touchUpInside)
-        playerView.addSubview(playButton)
-        
-        let stopButton = UIButton(frame: CGRect(x: window.frame.width * 0.6, y: window.frame.height * 0.07, width: 40, height: 40))
-        stopButton.layer.cornerRadius = 10
-        stopButton.addTarget(self, action: #selector(StopButtonTapped), for: UIControlEvents.touchUpInside)
-        stopButton.setImage(#imageLiteral(resourceName: "stopButton"), for: UIControlState.normal)
-        
-        playerView.addSubview(stopButton)
-        
-        let pauseButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
-        pauseButtonOutlet = pauseButton
-        pauseButton.layer.cornerRadius = 10
-        pauseButton.setImage(#imageLiteral(resourceName: "pauseButton"), for: UIControlState.normal)
-        pauseButton.addTarget(self, action: #selector(PauseButtonTapped), for: UIControlEvents.touchUpInside)
-        playerView.addSubview(pauseButton)
-        
-        // Track label
-        let trackName = UILabel(frame: CGRect(x: window.frame.width * 0.07, y: 1, width: 300, height: 20))
-        trackName.textAlignment = NSTextAlignment.center
-        trackNameOutlet = trackName
-        playerView.addSubview(trackName)
-        
+        playElement()
+        stopElement()
+        pauseElement()
+
+        // Labels
+        trackNameElement()
+        trackDurationElements()
         // Slider
-        let seekSlider = UISlider(frame: CGRect(x: window.frame.width * 0.07, y: window.frame.height * 0.03, width: 300, height: 40))
-        seekSlider.addTarget(self, action: #selector(ChangeAudioTime), for: UIControlEvents.touchUpInside)
-        sliderOutlet = seekSlider
-        sliderOutlet.minimumTrackTintColor = UIColor.red
-        sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
-        sliderOutlet.minimumValue = 0
-        sliderOutlet.maximumValue = Float(audioPlayer.duration)
-        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
-        playerView.addSubview(seekSlider)
-        
-        // Track duration label
-        let trackDuration = UILabel(frame: CGRect(x: window.frame.width * 0.8, y: 42, width: 50, height: 20))
-        trackDurationOutlet = trackDuration
-        playerView.addSubview(trackDuration)
-        
-        // Current time label
-        let currentTime = UILabel(frame: CGRect(x: window.frame.width * 0.03, y: 42, width: 50, height: 20))
-        currentTimeLabel = currentTime
-        currentTimeLabel.font = UIFont.boldSystemFont(ofSize: 13)
-        currentTimeLabel.text = "00:00"
-        playerView.addSubview(currentTime)
-        
-        fetchSongs()
+        sliderElement()
     }
-    
-    
+  
     // Player butons functions
     
     @IBAction func cellPlayButtonTapped(_ button: UIButton) {
@@ -141,7 +91,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         } else {
             print("Button indexPath not found")
         }
-        
 
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
@@ -154,7 +103,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             audioPlayer.currentTime = 0
             audioPlayer.play()
         }
-        
         self.trackDurationOutlet.text = self.selectedTrackDuration
         self.trackNameOutlet.text = self.selectedSongTitle
         print("Song started playing")
@@ -225,13 +173,11 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             URLQueryItem(name: "api_key", value: "CFEFES9JPKBN4T7H"),
             URLQueryItem(name: "page", value: "\(page)"),
             URLQueryItem(name: "genre_id", value: genreeID)
-
         ]
         
         URLSession.shared.dataTask(with: url.url!) { (data, response, error) in
             
             guard let data = data else {return}
-//            let dataString = String(data: data, encoding: .utf8)
             
             guard let songDescription = try? JSONDecoder().decode(SongDescription.self, from: data) else {
                 print("Error: Couldn't decode data into dataset")
@@ -245,8 +191,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             DispatchQueue.main.async {
                 self.tableview.reloadData()
             }
-            
-            }.resume()
+        }.resume()
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -268,8 +213,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         artistID = data.artist_id
         trackDuration = data.track_title
-        
-
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -318,5 +261,78 @@ public extension UITableView {
         let viewCenter = self.convert(center, from: view.superview)
         let indexPath = self.indexPathForRow(at: viewCenter)
         return indexPath
+    }
+}
+
+extension SongsListViewController {
+    // Creating player elements
+    
+    func customPlayerView() {
+        
+        let playerView = UIView(frame: CGRect(x: 10, y: window.frame.height * 1.1, width: window.frame.width - 20, height: window.frame.height * 0.15))
+        playerViewOutlet = playerView
+        playerView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        playerView.layer.cornerRadius = 5
+        playerViewOutlet.alpha = 0
+        window.addSubview(playerView)
+    }
+    
+    func playElement() {
+        let playButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
+        playButtonOutlet = playButton
+        playButton.layer.cornerRadius = 10
+        playButton.setImage(#imageLiteral(resourceName: "playButton"), for: UIControlState.normal)
+        playButton.addTarget(self, action: #selector(PlayButtonTapped), for: UIControlEvents.touchUpInside)
+        playerViewOutlet.addSubview(playButton)
+    }
+    
+    func stopElement() {
+        let stopButton = UIButton(frame: CGRect(x: window.frame.width * 0.6, y: window.frame.height * 0.07, width: 40, height: 40))
+        stopButton.layer.cornerRadius = 10
+        stopButton.addTarget(self, action: #selector(StopButtonTapped), for: UIControlEvents.touchUpInside)
+        stopButton.setImage(#imageLiteral(resourceName: "stopButton"), for: UIControlState.normal)
+        playerViewOutlet.addSubview(stopButton)
+    }
+    
+    func pauseElement() {
+        let pauseButton = UIButton(frame: CGRect(x: window.frame.width / 2 - 35, y: window.frame.height * 0.07, width: 40, height: 40))
+        pauseButtonOutlet = pauseButton
+        pauseButton.layer.cornerRadius = 10
+        pauseButton.setImage(#imageLiteral(resourceName: "pauseButton"), for: UIControlState.normal)
+        pauseButton.addTarget(self, action: #selector(PauseButtonTapped), for: UIControlEvents.touchUpInside)
+        playerViewOutlet.addSubview(pauseButton)
+    }
+    
+    func trackNameElement() {
+        let trackName = UILabel(frame: CGRect(x: window.frame.width * 0.07, y: 1, width: 300, height: 20))
+        trackName.textAlignment = NSTextAlignment.center
+        trackNameOutlet = trackName
+        playerViewOutlet.addSubview(trackName)
+    }
+    
+    func sliderElement() {
+        let seekSlider = UISlider(frame: CGRect(x: window.frame.width * 0.07, y: window.frame.height * 0.03, width: 300, height: 40))
+        seekSlider.addTarget(self, action: #selector(ChangeAudioTime), for: UIControlEvents.touchUpInside)
+        sliderOutlet = seekSlider
+        sliderOutlet.minimumTrackTintColor = UIColor.red
+        sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
+        sliderOutlet.minimumValue = 0
+        sliderOutlet.maximumValue = Float(audioPlayer.duration)
+        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+        playerViewOutlet.addSubview(seekSlider)
+    }
+    
+    func trackDurationElements() {
+        // total track duration
+        let trackDuration = UILabel(frame: CGRect(x: window.frame.width * 0.8, y: 42, width: 50, height: 20))
+        trackDurationOutlet = trackDuration
+        playerViewOutlet.addSubview(trackDuration)
+        
+        //current time duration
+        let currentTime = UILabel(frame: CGRect(x: window.frame.width * 0.03, y: 42, width: 50, height: 20))
+        currentTimeLabel = currentTime
+        currentTimeLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        currentTimeLabel.text = "00:00"
+        playerViewOutlet.addSubview(currentTime)
     }
 }
