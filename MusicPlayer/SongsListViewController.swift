@@ -319,10 +319,23 @@ extension SongsListViewController {
         sliderOutlet = seekSlider
         sliderOutlet.minimumTrackTintColor = UIColor.red
         sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
+        sliderOutlet.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.valueChanged)
 //        sliderOutlet.minimumValue = 0
 //        sliderOutlet.maximumValue = 1
 //        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         playerViewOutlet.addSubview(seekSlider)
+    }
+    
+    @objc func handleSliderChange() {
+        print(sliderOutlet.value)
+        
+        // Getting the full lenght of song (track_duration)
+            let floatTime = Float(CMTimeGetSeconds((player?.currentTime())!))
+        
+            let seekTime = CMTime(value: CMTimeValue(floatTime), timescale: 1)
+            player?.seek(to: seekTime, completionHandler: { (completedSeek) in
+                // perhapse do something here
+            })
     }
     
     func trackDurationElements() {
