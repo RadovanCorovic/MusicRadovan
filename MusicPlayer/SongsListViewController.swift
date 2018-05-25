@@ -13,6 +13,7 @@ import SVProgressHUD
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var player: AVPlayer?
+    var trackID = String()
     var trackURL = String()
     var currentTimeLabel = UILabel()
     var trackDurationOutlet = UILabel()
@@ -36,7 +37,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     let window = UIApplication.shared.keyWindow!
     
     @IBOutlet weak var tableview: UITableView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,8 +65,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Player butons functions
     
     @IBAction func cellPlayButtonTapped(_ button: UIButton) {
-        
-        
+
         playButtonOutlet.isHidden = true
         pauseButtonOutlet.isHidden = false
         
@@ -77,6 +76,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             selectedSongTitle = data.track_title
             selectedTrackDuration = data.track_duration
             trackURL = data.track_url
+            trackID = data.track_id
             print(trackURL)
             
             print("Button tapped at index path \(indexPath)")
@@ -84,14 +84,25 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             print("Button indexPath not found")
         }
         
+        // Playing track from internet
         let urlString = "\(trackURL)/download"
         if let url = URL(string: urlString) {
-            
+
             player = AVPlayer(url: url)
-            
             player?.play()
         }
-
+            // Playing track from local file
+        if let filePath = UserDefaults.standard.string(forKey: "\(trackID)") {
+            let fileManager = FileManager.default
+            
+            let documentsUrl = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+            let fileName = filePath.components(separatedBy: "/").last
+            let finalTrackURL = documentsUrl.first!.appendingPathComponent(fileName!)
+            
+            player = AVPlayer(url: finalTrackURL)
+            player?.play()
+        }
+        
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
                 self.playerViewOutlet.alpha = 1
@@ -129,8 +140,59 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         print("Song stopped playing")
     }
     
-    @IBAction func downloadButtonTapped(_ sender: Any) {
+    @IBAction func downloadButtonTapped(_ button: UIButton) {
         //code for song download
+        
+        // Getting song name based on indexPath.row user selected
+        if let indexPath = self.tableview.indexPathForView(button) {
+            let data : SongInfo
+            data = songDataset[indexPath.row]
+            trackURL = data.track_url
+            trackID = data.track_id
+            
+            print("Button tapped at index path \(indexPath)")
+        } else {
+            print("Button indexPath not found")
+        }
+        
+        if let audioUrl = URL(string: "\(trackURL)/download") {
+            
+            // creating document folder url
+            let documentsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            
+            // creating destination file url
+            var validUrl = URL(string: "\(trackURL).mp3")!
+            let fileUrl = documentsDirectoryURL.appendingPathComponent(validUrl.lastPathComponent)
+
+            UserDefaults.standard.set(fileUrl, forKey: "\(trackID)")
+
+            print(fileUrl)
+            
+            // check if it exists before download
+            if FileManager.default.fileExists(atPath: fileUrl.path) {
+                print("The file already exists at path")
+                
+               presentAlertMesage()
+                
+                // if file doesnt exist
+            } else {
+                
+                URLSession.shared.downloadTask(with: audioUrl, completionHandler: { (location, response, error) -> Void in
+                    guard let location = location, error == nil else { return }
+                    
+                    do {
+                        // // after downloading file we need to move it to ours destination url
+                        
+                        self.presentAlertMesage2()
+                        try FileManager.default.moveItem(at: location, to: fileUrl)
+                        print("File successfully moved to documents folder")
+                        
+                    } catch let error {
+                        print(error.localizedDescription)
+                    }
+                }).resume()
+            }
+        }
     }
 
     @objc func PlayButtonTapped(sender: UIButton!) {
@@ -187,11 +249,9 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 return
             }
             
-            
             self.songDataset.append(contentsOf: songDescription.dataset)
             self.totalPages = songDescription.total_pages
 
-            
             DispatchQueue.main.async {
                 self.tableview.reloadData()
                 SVProgressHUD.dismiss()
@@ -270,8 +330,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             print("New view controller was pushed")
         }
     }
-
- 
 }
 public extension UITableView {
     
@@ -372,5 +430,16 @@ extension SongsListViewController {
         currentTimeLabel.font = UIFont.boldSystemFont(ofSize: 13)
         currentTimeLabel.text = "00:00"
         playerViewOutlet.addSubview(currentTime)
+    }
+    
+    func presentAlertMesage() {
+        let alert = UIAlertController(title: "Alert:", message: "The file already exists.", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    func presentAlertMesage2() {
+        let alert = UIAlertController(title: "Confirmation:", message: "Song is downloaded successfully!", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }

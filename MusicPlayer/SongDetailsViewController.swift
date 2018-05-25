@@ -42,7 +42,7 @@ class SongDetailsViewController: UIViewController {
         artworkImageView.layer.borderWidth = 2
         artworkImageView.layer.borderColor = UIColor(red:222/255, green:225/255, blue:227/255, alpha: 1).cgColor
         
-        if let url = URL(string: "") {
+        if let url = URL(string: "\(trackArtwork)") {
             do {
                 let data = try Data(contentsOf: url)
                 self.artworkImageView.image = UIImage(data: data)
