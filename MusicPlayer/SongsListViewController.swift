@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import SVProgressHUD
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -172,6 +173,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     func fetchSongs() {
+        
+        SVProgressHUD.show(withStatus: "Downloading songs..")
         var url = URLComponents(string: "https://freemusicarchive.org/api/get/tracks.json")!
         url.queryItems = [
             URLQueryItem(name: "api_key", value: "CFEFES9JPKBN4T7H"),
@@ -188,12 +191,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 return
             }
             
+            
             self.songDataset.append(contentsOf: songDescription.dataset)
             self.totalPages = songDescription.total_pages
 
             
             DispatchQueue.main.async {
                 self.tableview.reloadData()
+                SVProgressHUD.dismiss()
             }
         }.resume()
     }
@@ -260,6 +265,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         {
             playerViewOutlet.isHidden = true
             print("View controller was popped")
+            SVProgressHUD.dismiss()
         }
         else
         {
