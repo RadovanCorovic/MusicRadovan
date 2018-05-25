@@ -78,6 +78,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let data = dataset[indexPath.row]
         
         cell.genreName.text = data.genre_title
+        cell.genreColor.layer.masksToBounds = true
+        cell.genreColor.layer.cornerRadius = cell.genreColor.frame.width / 2
+        
         cell.genreColor.backgroundColor = UIColor(hexString: data.genre_color)
         
         

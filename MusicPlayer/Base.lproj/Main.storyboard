@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Genres-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MusicPlayer" customModuleProvider="target" sceneMemberID="viewController">
@@ -28,21 +28,29 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="48.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="genreTitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAv-Z0-o0a">
-                                                    <rect key="frame" x="36" y="12" width="192" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="genreTitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAv-Z0-o0a">
+                                                    <rect key="frame" x="36" y="14" width="192" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCb-N7-pjW">
-                                                    <rect key="frame" x="283" y="6" width="30" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCb-N7-pjW">
+                                                    <rect key="frame" x="325" y="9" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="LLL-Qx-AFJ"/>
+                                                        <constraint firstAttribute="height" constant="30" id="Myh-TG-CJK"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="EAv-Z0-o0a" firstAttribute="centerY" secondItem="mLC-T1-pff" secondAttribute="centerY" id="4eT-Qt-Y0J"/>
+                                                <constraint firstItem="HCb-N7-pjW" firstAttribute="leading" secondItem="EAv-Z0-o0a" secondAttribute="leading" constant="289" id="TiX-qi-fMi"/>
+                                                <constraint firstItem="HCb-N7-pjW" firstAttribute="top" secondItem="mLC-T1-pff" secondAttribute="top" constant="9" id="i1J-pB-d6v"/>
+                                                <constraint firstAttribute="trailing" secondItem="HCb-N7-pjW" secondAttribute="trailing" constant="20" id="ywb-rh-7tP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="genreColor" destination="HCb-N7-pjW" id="NQm-KB-X0d"/>
@@ -65,7 +73,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="3Uy-3N-fe1"/>
+                    <navigationItem key="navigationItem" title="Genres" id="caW-Zk-YL1"/>
                     <connections>
                         <outlet property="tableview" destination="8f6-eA-0gE" id="6jl-IA-ndF"/>
                         <segue destination="hMA-Dg-s01" kind="show" identifier="showSongs" id="qfG-Wa-5NG"/>
@@ -75,7 +83,7 @@
             </objects>
             <point key="canvasLocation" x="456.80000000000001" y="117.39130434782609"/>
         </scene>
-        <!--Songs List View Controller-->
+        <!--Songs-->
         <scene sceneID="lZH-Pq-f3r">
             <objects>
                 <viewController id="hMA-Dg-s01" customClass="SongsListViewController" customModule="MusicPlayer" customModuleProvider="target" sceneMemberID="viewController">
@@ -159,6 +167,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="uYH-1Z-Qce"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Songs" id="gkg-T2-d2D"/>
                     <connections>
                         <outlet property="tableview" destination="RiY-Af-wos" id="WZM-1p-m6y"/>
                     </connections>
@@ -167,7 +176,7 @@
             </objects>
             <point key="canvasLocation" x="1180" y="115.59220389805098"/>
         </scene>
-        <!--Song Details View Controller-->
+        <!--Details-->
         <scene sceneID="N9T-no-c5s">
             <objects>
                 <viewController id="rOh-us-NE7" customClass="SongDetailsViewController" customModule="MusicPlayer" customModuleProvider="target" sceneMemberID="viewController">
@@ -175,22 +184,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="blurredBg" translatesAutoresizingMaskIntoConstraints="NO" id="dus-TV-wuR">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song tittle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8G-kf-j2Q">
-                                <rect key="frame" x="65" y="139" width="228" height="21"/>
+                                <rect key="frame" x="41" y="227" width="293" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Artist name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUm-NK-ULg">
-                                <rect key="frame" x="65" y="227" width="228" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Artist name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUm-NK-ULg">
+                                <rect key="frame" x="41" y="315" width="293" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0n-jL-sE6">
-                                <rect key="frame" x="67" y="296" width="240" height="30"/>
+                                <rect key="frame" x="68" y="384" width="240" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Show All Artist Albums">
@@ -200,26 +211,35 @@
                                     <action selector="showAllArtistButtonTapepd:" destination="rOh-us-NE7" eventType="touchUpInside" id="AcM-aC-vDa"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song tittle:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzh-Gr-6zc">
-                                <rect key="frame" x="137" y="110" width="101" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Artist name:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4dP-gP-b3x">
+                                <rect key="frame" x="137" y="286" width="101" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Artist name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4dP-gP-b3x">
-                                <rect key="frame" x="129" y="198" width="101" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song tittle:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzh-Gr-6zc">
+                                <rect key="frame" x="138" y="198" width="101" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dus-TV-wuR" firstAttribute="bottom" secondItem="Jru-7b-MnR" secondAttribute="bottom" id="36n-TS-fgo"/>
+                            <constraint firstItem="qUm-NK-ULg" firstAttribute="centerX" secondItem="dus-TV-wuR" secondAttribute="centerX" id="FCy-66-YA1"/>
+                            <constraint firstItem="dus-TV-wuR" firstAttribute="top" secondItem="mYe-iw-TNw" secondAttribute="top" id="UPg-Rf-Zex"/>
+                            <constraint firstItem="dus-TV-wuR" firstAttribute="leading" secondItem="mYe-iw-TNw" secondAttribute="leading" id="lfe-xN-0VN"/>
+                            <constraint firstItem="dus-TV-wuR" firstAttribute="trailing" secondItem="Jru-7b-MnR" secondAttribute="trailing" id="pVG-5H-2O1"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="Jru-7b-MnR"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Details" id="sAm-Az-p3C"/>
                     <connections>
                         <outlet property="artistNameLabel" destination="qUm-NK-ULg" id="7C3-BN-KGL"/>
+                        <outlet property="showAllAlbumsOutlet" destination="f0n-jL-sE6" id="hgh-Ut-U9Q"/>
                         <outlet property="songTitleLabel" destination="I8G-kf-j2Q" id="9OW-Gu-cTl"/>
                         <segue destination="NOt-bb-ZP1" kind="show" identifier="showAlbums" id="US8-mn-TNA"/>
                     </connections>
@@ -228,7 +248,7 @@
             </objects>
             <point key="canvasLocation" x="1965.5999999999999" y="116.49175412293854"/>
         </scene>
-        <!--Artist Albums View Controller-->
+        <!--Albums-->
         <scene sceneID="R9n-p1-hDv">
             <objects>
                 <viewController id="NOt-bb-ZP1" customClass="ArtistAlbumsViewController" customModule="MusicPlayer" customModuleProvider="target" sceneMemberID="viewController">
@@ -262,6 +282,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <viewLayoutGuide key="safeArea" id="0za-lA-zwI"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Albums" id="GRL-eS-cFm"/>
                     <connections>
                         <outlet property="tableview" destination="kTg-fU-80H" id="9in-nS-Jwo"/>
                     </connections>
@@ -270,7 +291,7 @@
             </objects>
             <point key="canvasLocation" x="2724" y="117"/>
         </scene>
-        <!--Web View Controller-->
+        <!--Web-->
         <scene sceneID="j76-Xq-zkt">
             <objects>
                 <viewController id="K1n-2E-sra" customClass="WebViewController" customModule="MusicPlayer" customModuleProvider="target" sceneMemberID="viewController">
@@ -296,6 +317,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2fd-z9-VlB"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Web" id="ZiT-mM-bBS"/>
                     <connections>
                         <outlet property="webView" destination="8Qd-on-1zt" id="pfQ-nb-QLl"/>
                     </connections>
@@ -324,6 +346,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="blurredBg" width="320" height="568"/>
         <image name="downloadButton" width="250" height="250"/>
         <image name="pauseButton" width="255" height="255"/>
         <image name="playButton" width="590" height="591"/>

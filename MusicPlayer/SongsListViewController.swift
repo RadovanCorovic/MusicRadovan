@@ -36,11 +36,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet weak var tableview: UITableView!
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        
-        stopButtonOutlet.isEnabled = false
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -363,12 +358,13 @@ extension SongsListViewController {
     
     func trackDurationElements() {
         // total track duration
-        let trackDuration = UILabel(frame: CGRect(x: window.frame.width * 0.8, y: 42, width: 50, height: 20))
+        let trackDuration = UILabel(frame: CGRect(x: window.frame.width * 0.8, y: 45, width: 50, height: 20))
         trackDurationOutlet = trackDuration
+        trackDurationOutlet.font = UIFont.boldSystemFont(ofSize: 13)
         playerViewOutlet.addSubview(trackDuration)
         
         //current time duration
-        let currentTime = UILabel(frame: CGRect(x: window.frame.width * 0.03, y: 42, width: 50, height: 20))
+        let currentTime = UILabel(frame: CGRect(x: window.frame.width * 0.03, y: 45, width: 50, height: 20))
         currentTimeLabel = currentTime
         currentTimeLabel.font = UIFont.boldSystemFont(ofSize: 13)
         currentTimeLabel.text = "00:00"

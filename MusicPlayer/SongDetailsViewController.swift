@@ -16,6 +16,7 @@ class SongDetailsViewController: UIViewController {
     
     @IBOutlet weak var songTitleLabel: UILabel!
     @IBOutlet weak var artistNameLabel: UILabel!
+    @IBOutlet weak var showAllAlbumsOutlet: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +28,11 @@ class SongDetailsViewController: UIViewController {
         if let artistname = artistName {
             artistNameLabel.text = artistname
         }
-        // Do any additional setup after loading the view.
+        customizeButton()
+    }
+    
+    func customizeButton() {
+        showAllAlbumsOutlet.layer.cornerRadius = 10
     }
 
     @IBAction func showAllArtistButtonTapepd(_ sender: Any) {
