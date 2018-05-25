@@ -188,20 +188,21 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song tittle" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8G-kf-j2Q">
-                                <rect key="frame" x="41" y="227" width="293" height="21"/>
+                                <rect key="frame" x="16" y="256" width="343" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Artist name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUm-NK-ULg">
-                                <rect key="frame" x="41" y="315" width="293" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Artist name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUm-NK-ULg">
+                                <rect key="frame" x="41" y="344" width="293" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0n-jL-sE6">
-                                <rect key="frame" x="68" y="384" width="240" height="30"/>
+                                <rect key="frame" x="68" y="413" width="240" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Show All Artist Albums">
@@ -211,25 +212,28 @@
                                     <action selector="showAllArtistButtonTapepd:" destination="rOh-us-NE7" eventType="touchUpInside" id="AcM-aC-vDa"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Artist name:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4dP-gP-b3x">
-                                <rect key="frame" x="137" y="286" width="101" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Song tittle:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzh-Gr-6zc">
-                                <rect key="frame" x="138" y="198" width="101" height="21"/>
+                                <rect key="frame" x="138" y="227" width="101" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Artist name:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4dP-gP-b3x">
+                                <rect key="frame" x="137" y="315" width="101" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" red="0.92538946870000005" green="0.92554819580000003" blue="0.92537957429999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MDA-EX-EUZ">
+                                <rect key="frame" x="122" y="83" width="130" height="130"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="dus-TV-wuR" firstAttribute="bottom" secondItem="Jru-7b-MnR" secondAttribute="bottom" id="36n-TS-fgo"/>
-                            <constraint firstItem="qUm-NK-ULg" firstAttribute="centerX" secondItem="dus-TV-wuR" secondAttribute="centerX" id="FCy-66-YA1"/>
                             <constraint firstItem="dus-TV-wuR" firstAttribute="top" secondItem="mYe-iw-TNw" secondAttribute="top" id="UPg-Rf-Zex"/>
                             <constraint firstItem="dus-TV-wuR" firstAttribute="leading" secondItem="mYe-iw-TNw" secondAttribute="leading" id="lfe-xN-0VN"/>
                             <constraint firstItem="dus-TV-wuR" firstAttribute="trailing" secondItem="Jru-7b-MnR" secondAttribute="trailing" id="pVG-5H-2O1"/>
@@ -239,6 +243,7 @@
                     <navigationItem key="navigationItem" title="Details" id="sAm-Az-p3C"/>
                     <connections>
                         <outlet property="artistNameLabel" destination="qUm-NK-ULg" id="7C3-BN-KGL"/>
+                        <outlet property="artworkImageView" destination="MDA-EX-EUZ" id="fwe-Ry-uCq"/>
                         <outlet property="showAllAlbumsOutlet" destination="f0n-jL-sE6" id="hgh-Ut-U9Q"/>
                         <outlet property="songTitleLabel" destination="I8G-kf-j2Q" id="9OW-Gu-cTl"/>
                         <segue destination="NOt-bb-ZP1" kind="show" identifier="showAlbums" id="US8-mn-TNA"/>

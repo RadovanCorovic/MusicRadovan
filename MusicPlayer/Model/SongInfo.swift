@@ -14,4 +14,6 @@ struct SongInfo: Decodable {
     let artist_id: String
     let track_duration: String
     let track_url: String
+    let track_image_file: String
 }
+

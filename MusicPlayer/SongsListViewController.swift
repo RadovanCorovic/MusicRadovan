@@ -25,6 +25,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     var stopButtonOutlet = UIButton()
     
     var sliderOutlet = UISlider()
+    var trackImage = String()
     var artistID = String()
     var genreeID = String()
     var trackDuration = String()
@@ -214,7 +215,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = songDataset[indexPath.row]
-        
+//        trackImage = data.track_image_file
         artistID = data.artist_id
         trackDuration = data.track_title
     }
@@ -250,6 +251,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 destinationVC?.songName = songDetils.track_title
                 destinationVC?.artistName = songDetils.artist_name
                 destinationVC?.artistId = songDetils.artist_id
+                destinationVC?.trackArtwork = songDetils.track_image_file
+                self.tableview.deselectRow(at: selectedRowForIndexPath, animated: false)
             }
         }
     }
