@@ -93,10 +93,13 @@ class ArtistAlbumsViewController: UIViewController, UITableViewDelegate, UITable
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showWeb" {
+            if let indexPathForSelectedRow = tableview.indexPathForSelectedRow {
             let destinationVC = segue.destination as! WebViewController
             
             destinationVC.webAdress = urlAdress
+            self.tableview.deselectRow(at: indexPathForSelectedRow, animated: false)
             print(urlAdress)
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import SVProgressHUD
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let audioPlayer = AVAudioPlayer()
     var player: AVPlayer?
     var trackID = String()
     var trackURL = String()
@@ -84,24 +85,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             print("Button indexPath not found")
         }
         
-        // Playing track from internet
-        let urlString = "\(trackURL)/download"
-        if let url = URL(string: urlString) {
-
-            player = AVPlayer(url: url)
-            player?.play()
-        }
-            // Playing track from local file
-        if let filePath = UserDefaults.standard.string(forKey: "\(trackID)") {
-            let fileManager = FileManager.default
-            
-            let documentsUrl = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
-            let fileName = filePath.components(separatedBy: "/").last
-            let finalTrackURL = documentsUrl.first!.appendingPathComponent(fileName!)
-            
-            player = AVPlayer(url: finalTrackURL)
-            player?.play()
-        }
+        setupPlayerView()
         
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
@@ -118,6 +102,38 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         self.trackDurationOutlet.text = self.selectedTrackDuration
         self.trackNameOutlet.text = self.selectedSongTitle
         print("Song started playing")
+    }
+    
+    func setupPlayerView() {
+        // Playing track from internet
+        let urlString = "\(trackURL)/download"
+        if let url = URL(string: urlString) {
+            
+            player = AVPlayer(url: url)
+            player?.play()
+            
+            player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
+        }
+        // Playing track from local file
+        if let filePath = UserDefaults.standard.string(forKey: "\(trackID)") {
+            let fileManager = FileManager.default
+            
+            let documentsUrl = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+            let fileName = filePath.components(separatedBy: "/").last
+            let finalTrackURL = documentsUrl.first!.appendingPathComponent(fileName!)
+            
+            player = AVPlayer(url: finalTrackURL)
+            player?.play()
+            
+            player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        // [layer is ready and rendering frames
+        if keyPath == "currentItem.loadedTimeRanges" {
+            print(change)
+        }
     }
     
     @IBAction func cellPauseButtonTapped(_ sender: Any) {
@@ -228,6 +244,13 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         player?.rate = 0.0
         player?.rate = sliderOutlet.value
         player?.play()
+    }
+    
+    // Function that updates slider time value
+    @objc func updateSlider() {
+//        sliderOutlet.value = Float(audioPlayer.currentTime)
+//        sliderOutlet.value = Float(player?.currentTime())
+//        sliderOutlet.value = Float(player?.currentItem?.duration)
     }
     
     func fetchSongs() {
@@ -400,21 +423,42 @@ extension SongsListViewController {
         sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
         sliderOutlet.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.valueChanged)
 //        sliderOutlet.minimumValue = 0
-//        sliderOutlet.maximumValue = 1
+//        sliderOutlet.maximumValue = Float(audioPlayer.duration)
 //        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
         playerViewOutlet.addSubview(seekSlider)
     }
     
     @objc func handleSliderChange() {
+        
         print(sliderOutlet.value)
         
-        // Getting the full lenght of song (track_duration)
-            let floatTime = Float(CMTimeGetSeconds((player?.currentTime())!))
+        let correctDurration = Float(CMTimeGetSeconds((player?.currentTime())!))
         
-            let seekTime = CMTime(value: CMTimeValue(floatTime), timescale: 1)
-            player?.seek(to: seekTime, completionHandler: { (completedSeek) in
-                // perhapse do something here
-            })
+        let value = Float(sliderOutlet.value) * correctDurration
+        
+        let seekTime = CMTime(value: Int64(value), timescale: 1)
+        
+        player?.seek(to: seekTime, completionHandler: { (completedSeek) in
+            // maybe do something here
+        })
+            
+            
+        
+        
+        
+//        if let duration = player?.currentItem?.duration {
+//            let totalSeconds = CMTimeGetSeconds(duration)
+//
+//            let value = Float64(sliderOutlet.value) * totalSeconds
+//
+//            let seekTime = CMTime(value: Int64(value), timescale: 1)
+//
+//            player?.seek(to: seekTime, completionHandler: { (completedSeek) in
+//                // maybe do something here
+//            })
+//        }
+        
+       
     }
     
     func trackDurationElements() {
@@ -441,5 +485,11 @@ extension SongsListViewController {
         let alert = UIAlertController(title: "Confirmation:", message: "Song is downloaded successfully!", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+}
+
+extension AVPlayer {
+    var isPlaying: Bool {
+        return rate != 0 && error == nil
     }
 }
