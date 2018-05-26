@@ -127,6 +127,18 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             
             player?.addObserver(self, forKeyPath: "currentItem.loadedTimeRanges", options: .new, context: nil)
         }
+        // track player progress
+        let interval = CMTime(value: 1, timescale: 2)
+        player?.addPeriodicTimeObserver(forInterval: interval, queue: DispatchQueue.main, using: { (progressTime) in
+ 
+            let seconds = CMTimeGetSeconds(progressTime)
+            let secondsString = String(format: "%02d", Int(seconds) % 60)
+            let minutesString = String(format: "%02d", Int(seconds) / 60)
+            self.currentTimeLabel.text = "\(minutesString):\(secondsString)"
+            print(seconds)
+            
+            
+        })
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
