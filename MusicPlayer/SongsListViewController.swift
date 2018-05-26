@@ -65,7 +65,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     // Player butons functions
     
     @IBAction func cellPlayButtonTapped(_ button: UIButton) {
-
+        sliderOutlet.isEnabled = true
         playButtonOutlet.isHidden = true
         pauseButtonOutlet.isHidden = false
         
@@ -78,7 +78,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             trackURL = data.track_url
             trackID = data.track_id
             print(trackURL)
-           setupPlayerView()
+            setupPlayerView()
             print("Button tapped at index path \(indexPath)")
         } else {
             print("Button indexPath not found")
@@ -142,8 +142,8 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 self.sliderOutlet.value = Float(seconds / durationSeconds)
             }
-            
         })
+        
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
@@ -277,6 +277,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         URLSession.shared.dataTask(with: url.url!) { (data, response, error) in
             
             guard let data = data else {return}
+            let dataString = String(data: data, encoding: .utf8)
             
             guard let songDescription = try? JSONDecoder().decode(SongDescription.self, from: data) else {
                 print("Error: Couldn't decode data into dataset")
@@ -442,7 +443,7 @@ extension SongsListViewController {
             if let duration = player?.currentItem?.asset.duration {
                 let seconds = CMTimeGetSeconds(duration)
                 guard !(seconds.isNaN || seconds.isInfinite) else {
-                    
+                    sliderOutlet.isEnabled = false
                     print("Cant seek song that is streaming")
                     
                     return
@@ -481,11 +482,5 @@ extension SongsListViewController {
         let alert = UIAlertController(title: "Confirmation:", message: "Song is downloaded successfully!", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
-    }
-}
-
-extension AVPlayer {
-    var isPlaying: Bool {
-        return rate != 0 && error == nil
     }
 }
