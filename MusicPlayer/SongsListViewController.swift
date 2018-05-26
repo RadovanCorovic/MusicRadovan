@@ -147,6 +147,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         player?.pause()
         player?.rate = 0.0
         
+        
         if playerViewOutlet.alpha == 1 {
             UIView.animate(withDuration: 1) {
                 self.playerViewOutlet.alpha = 0
@@ -158,7 +159,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBAction func downloadButtonTapped(_ button: UIButton) {
         //code for song download
-        
+        SVProgressHUD.show(withStatus: "Downloading...")
         // Getting song name based on indexPath.row user selected
         if let indexPath = self.tableview.indexPathForView(button) {
             let data : SongInfo
@@ -198,7 +199,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                     
                     do {
                         // // after downloading file we need to move it to ours destination url
-                        
+                        SVProgressHUD.dismiss()
                         self.presentAlertMesage2()
                         try FileManager.default.moveItem(at: location, to: fileUrl)
                         print("File successfully moved to documents folder")
@@ -423,6 +424,12 @@ extension SongsListViewController {
             print(sliderOutlet.value)
             if let duration = player?.currentItem?.asset.duration {
                 let seconds = CMTimeGetSeconds(duration)
+                guard !(seconds.isNaN || seconds.isInfinite) else {
+                    
+                    print("Cant seek song that is streaming")
+                    
+                    return
+                }
                 let value = Double(sliderOutlet.value) * Double(seconds)
                 let seekTime = CMTime(value: Int64(value), timescale: 1)
                 
