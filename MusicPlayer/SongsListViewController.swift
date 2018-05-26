@@ -79,13 +79,13 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             trackURL = data.track_url
             trackID = data.track_id
             print(trackURL)
-            
+           setupPlayerView()
             print("Button tapped at index path \(indexPath)")
         } else {
             print("Button indexPath not found")
         }
         
-        setupPlayerView()
+        
         
         if playerViewOutlet.alpha == 0 {
             UIView.animate(withDuration: 1) {
@@ -132,7 +132,7 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         // [layer is ready and rendering frames
         if keyPath == "currentItem.loadedTimeRanges" {
-            print(change)
+            print(change!)
         }
     }
     
@@ -246,13 +246,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         player?.play()
     }
     
-    // Function that updates slider time value
-    @objc func updateSlider() {
-//        sliderOutlet.value = Float(audioPlayer.currentTime)
-//        sliderOutlet.value = Float(player?.currentTime())
-//        sliderOutlet.value = Float(player?.currentItem?.duration)
-    }
-    
     func fetchSongs() {
         
         SVProgressHUD.show(withStatus: "Downloading songs..")
@@ -298,7 +291,6 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = songDataset[indexPath.row]
-//        trackImage = data.track_image_file
         artistID = data.artist_id
         trackDuration = data.track_title
     }
@@ -421,44 +413,24 @@ extension SongsListViewController {
         sliderOutlet = seekSlider
         sliderOutlet.minimumTrackTintColor = UIColor.red
         sliderOutlet.setThumbImage(UIImage(named: "thumb"), for: UIControlState.normal)
-        sliderOutlet.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.valueChanged)
-//        sliderOutlet.minimumValue = 0
-//        sliderOutlet.maximumValue = Float(audioPlayer.duration)
-//        var timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSlider), userInfo: nil, repeats: true)
+        sliderOutlet.addTarget(self, action: #selector(handleSliderChange), for: UIControlEvents.touchUpInside)
+
         playerViewOutlet.addSubview(seekSlider)
     }
     
     @objc func handleSliderChange() {
-        
-        print(sliderOutlet.value)
-        
-        let correctDurration = Float(CMTimeGetSeconds((player?.currentTime())!))
-        
-        let value = Float(sliderOutlet.value) * correctDurration
-        
-        let seekTime = CMTime(value: Int64(value), timescale: 1)
-        
-        player?.seek(to: seekTime, completionHandler: { (completedSeek) in
-            // maybe do something here
-        })
-            
-            
-        
-        
-        
-//        if let duration = player?.currentItem?.duration {
-//            let totalSeconds = CMTimeGetSeconds(duration)
-//
-//            let value = Float64(sliderOutlet.value) * totalSeconds
-//
-//            let seekTime = CMTime(value: Int64(value), timescale: 1)
-//
-//            player?.seek(to: seekTime, completionHandler: { (completedSeek) in
-//                // maybe do something here
-//            })
-//        }
-        
-       
+
+            print(sliderOutlet.value)
+            if let duration = player?.currentItem?.asset.duration {
+                let seconds = CMTimeGetSeconds(duration)
+                let value = Double(sliderOutlet.value) * Double(seconds)
+                let seekTime = CMTime(value: Int64(value), timescale: 1)
+                
+                print("Duration: \(duration), seconds: \(seconds), value: \(value), seekTime: \(seekTime)")
+                player?.seek(to: seekTime, completionHandler: { (completedSeek) in
+                    // maybe do something here
+                })
+            }
     }
     
     func trackDurationElements() {
