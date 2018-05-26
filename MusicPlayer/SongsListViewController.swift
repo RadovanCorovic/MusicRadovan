@@ -12,7 +12,6 @@ import SVProgressHUD
 
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    let audioPlayer = AVAudioPlayer()
     var player: AVPlayer?
     var trackID = String()
     var trackURL = String()
@@ -135,8 +134,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
             let secondsString = String(format: "%02d", Int(seconds) % 60)
             let minutesString = String(format: "%02d", Int(seconds) / 60)
             self.currentTimeLabel.text = "\(minutesString):\(secondsString)"
-            print(seconds)
             
+            // moving the slider thumb
+            
+            if let duration = self.player?.currentItem?.duration {
+                let durationSeconds = CMTimeGetSeconds(duration)
+                
+                self.sliderOutlet.value = Float(seconds / durationSeconds)
+            }
             
         })
     }
