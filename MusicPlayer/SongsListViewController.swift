@@ -73,10 +73,22 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         if let indexPath = self.tableview.indexPathForView(button) {
             let data : SongInfo
             data = songDataset[indexPath.row]
-            selectedSongTitle = data.track_title
-            selectedTrackDuration = data.track_duration
-            trackURL = data.track_url
-            trackID = data.track_id
+            selectedSongTitle = "Song title"
+            if data.track_title != nil {
+                selectedSongTitle = data.track_title!
+            }
+            selectedTrackDuration = "00:00"
+            if data.track_duration != nil {
+                selectedTrackDuration = data.track_duration!
+            }
+            trackURL = "trackUrl"
+            if data.track_url != nil {
+                trackURL = data.track_url!
+            }
+            trackID = "0"
+            if data.track_id != nil {
+                trackID = data.track_id!
+            }
             print(trackURL)
             setupPlayerView()
             print("Button tapped at index path \(indexPath)")
@@ -181,8 +193,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         if let indexPath = self.tableview.indexPathForView(button) {
             let data : SongInfo
             data = songDataset[indexPath.row]
-            trackURL = data.track_url
-            trackID = data.track_id
+            trackURL = ""
+            if data.track_url != nil {
+                trackURL = data.track_url!
+            }
+            trackID = "0"
+            if data.track_id != nil {
+                trackID = data.track_id!
+            }
             
             print("Button tapped at index path \(indexPath)")
         } else {
@@ -310,8 +328,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let data = songDataset[indexPath.row]
-        artistID = data.artist_id
-        trackDuration = data.track_title
+        artistID = "0"
+        if data.artist_id != nil {
+            artistID = data.artist_id!
+        }
+        trackDuration = "00:00"
+        if data.track_title != nil{
+            trackDuration = data.track_duration!
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -344,8 +368,14 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
                 
                 destinationVC?.songName = songDetils.track_title
                 destinationVC?.artistName = songDetils.artist_name
-                destinationVC?.artistId = songDetils.artist_id
-                destinationVC?.trackArtwork = songDetils.track_image_file
+                destinationVC?.artistId = "0"
+                if songDetils.artist_id != nil {
+                    destinationVC?.artistId = songDetils.artist_id!
+                }
+                destinationVC?.trackArtwork = "Unknown"
+                if songDetils.track_image_file != nil {
+                    destinationVC?.trackArtwork = songDetils.track_image_file!
+                }
                 self.tableview.deselectRow(at: selectedRowForIndexPath, animated: false)
             }
         }
