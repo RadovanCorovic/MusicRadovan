@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 import SVProgressHUD
 
+let theSession = AVAudioSession.sharedInstance()
+
 class SongsListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var player: AVPlayer?
@@ -60,6 +62,31 @@ class SongsListViewController: UIViewController, UITableViewDelegate, UITableVie
         // Slider
         sliderElement()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleInterruption), name: .AVAudioSessionInterruption, object: theSession)
+    }
+    
+    @objc func handleInterruption(_ notification: Notification) {
+        guard let info = notification.userInfo,
+            let typeValue = info[AVAudioSessionInterruptionTypeKey] as? UInt,
+            let type = AVAudioSessionInterruptionType(rawValue: typeValue) else {
+                return
+        }
+        if type == .began {
+            // Interruption began, take appropriate actions (save state, update user interface)
+            player?.pause()
+        }
+        else if type == .ended {
+            
+            guard let optionsValue =
+                info[AVAudioSessionInterruptionOptionKey] as? UInt else {
+                    return
+            }
+            let options = AVAudioSessionInterruptionOptions(rawValue: optionsValue)
+            if options.contains(.shouldResume) {
+                // Interruption Ended - playback should resume
+                player?.play()
+            }
+        }
     }
   
     // Player butons functions
